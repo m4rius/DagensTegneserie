@@ -1,4 +1,6 @@
 package com.marius.dagens.tegneserie;
+import static java.util.Calendar.DAY_OF_MONTH;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,7 +10,12 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +24,12 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class DagensTegneserieServlet extends HttpServlet {
 	
+	private static Logger logger = Logger.getLogger(DagensTegneserieServlet.class.getName());
 	
+	
+	private static String lunshPath = null;
+	private static int dayLunshPathParsed = 0; 
+//	private static Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Copenhagen"));
 	
 	private byte[] byteArray;
 
@@ -46,9 +58,16 @@ public class DagensTegneserieServlet extends HttpServlet {
 	}
 
 	private void sendLunsh(HttpServletResponse resp) throws IOException {
-		String dagbladetTegneserieContent = readURLContent("http://www.dagbladet.no/tegneserie/");
-		String lunshUrl = findLunchPath(dagbladetTegneserieContent);
-		sendImgToResponse(lunshUrl, resp);		
+		int idag = new GregorianCalendar(TimeZone.getTimeZone("Europe/Copenhagen")).get(DAY_OF_MONTH);
+		if (lunshPath == null || dayLunshPathParsed != idag) {
+			logger.info("Parsing path to lunsh cartoon on dagbladet");
+			String dagbladetTegneserieContent = readURLContent("http://www.dagbladet.no/tegneserie/");
+			lunshPath = findLunchPath(dagbladetTegneserieContent);
+			dayLunshPathParsed = idag;
+		} else {
+			logger.info("Using cached path :" + lunshPath);
+		}
+		sendImgToResponse(lunshPath, resp);
 	}
 
 	private void sendImgToResponse(String lunshUrl, HttpServletResponse resp) throws IOException {
