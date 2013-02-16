@@ -15,24 +15,20 @@ public class DagensTegneserieServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
 
-        boolean cartoonUrl = false;
-
         for (Cartoon cartoon : Cartoon.values()) {
             if (pathInfo.contains(cartoon.getAppUrl())) {
-                cartoonUrl = true;
                 sendCartoonToResponse(new CartoonDataStoreService().getUrlFor(cartoon), resp);
+                return;
             }
         }
 
-        if (!cartoonUrl) {
-            if (pathInfo.contains("cron")) {
-                resp.getWriter().print(200);
-            }  else if (pathInfo.contains("store-cartoons")) {
-                new CartoonDataStoreService().storeAllCartoons();
-                resp.getWriter().print(200);
-            } else {
-                resp.sendRedirect("index.html");
-            }
+        if (pathInfo.contains("cron")) {
+            resp.getWriter().print(200);
+        }  else if (pathInfo.contains("store-cartoons")) {
+            new CartoonDataStoreService().storeAllCartoons();
+            resp.getWriter().print(200);
+        } else {
+            resp.sendRedirect("index.html");
         }
     }
 

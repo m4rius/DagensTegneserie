@@ -8,9 +8,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Logger;
 
-public abstract class AbstractCartoonParser {
+public abstract class AbstractCartoonProvider {
 
-    private static final Logger log = Logger.getLogger(AbstractCartoonParser.class.getName());
+    private static final Logger log = Logger.getLogger(AbstractCartoonProvider.class.getName());
 
     protected String readURLContent(String urls) throws IOException {
 

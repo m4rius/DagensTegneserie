@@ -1,6 +1,7 @@
 package com.marius.dagenstegneserie;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.repackaged.com.google.common.base.Strings;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -12,11 +13,17 @@ public class CartoonDataStoreService {
 
     public void storeAllCartoons() {
         for (Cartoon cartoon : Cartoon.values()) {
-            findUrlAndStore(cartoon);
+            if (cartoon.isStore()) {
+                findUrlAndStore(cartoon);
+            }
         }
     }
 
     public String getUrlFor(Cartoon cartoon) {
+        if (!cartoon.isStore()) {
+            return findUrlToCartoon(cartoon);
+        }
+
         Entity entity = findEntity(cartoon);
         if (entity == null) {
             entity = findUrlAndStore(cartoon);
@@ -39,7 +46,7 @@ public class CartoonDataStoreService {
         Entity entity = findEntity(cartoon);
         if (entity == null) {
             createAndStoreNewEntity(cartoon, url);
-        } else {
+        } else if (!Strings.isNullOrEmpty(url)){
             entity.setProperty("url", url);
             entity.setProperty("updated", new Date());
             storeEntity(entity);
@@ -49,7 +56,7 @@ public class CartoonDataStoreService {
     }
 
     private String findUrlToCartoon(Cartoon cartoon) {
-        return cartoon.getParser().findUrlFor(cartoon);
+        return cartoon.getProvider().findUrlFor(cartoon);
     }
 
     private Entity createAndStoreNewEntity(Cartoon cartoon, String url) {

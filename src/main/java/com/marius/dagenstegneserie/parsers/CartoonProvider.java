@@ -2,7 +2,7 @@ package com.marius.dagenstegneserie.parsers;
 
 import com.marius.dagenstegneserie.Cartoon;
 
-public interface CartoonParser {
+public interface CartoonProvider {
 
     String findUrlFor(Cartoon cartoon);
 }

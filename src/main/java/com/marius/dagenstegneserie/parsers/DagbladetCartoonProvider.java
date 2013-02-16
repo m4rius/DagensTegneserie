@@ -6,9 +6,9 @@ import com.marius.dagenstegneserie.Cartoon;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class DagbladetCartoonParser extends AbstractCartoonParser implements CartoonParser {
+public class DagbladetCartoonProvider extends AbstractCartoonProvider implements CartoonProvider {
 
-    private static final Logger log = Logger.getLogger(DagbladetCartoonParser.class.getName());
+    private static final Logger log = Logger.getLogger(DagbladetCartoonProvider.class.getName());
 
     private String findCartoonFromDbHtml(String webpagehtml) {
         String gifUrl = webpagehtml.substring(webpagehtml.indexOf("<img class=\"tegneserie\""));
