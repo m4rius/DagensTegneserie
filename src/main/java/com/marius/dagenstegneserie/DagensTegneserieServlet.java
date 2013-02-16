@@ -26,103 +26,47 @@ import com.google.appengine.api.datastore.Query;
 public class DagensTegneserieServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(DagensTegneserieServlet.class.getName());
 
-    private static final String KIND = "Tegneserier";
-
     public void doGet(HttpServletRequest req, HttpServletResponse resp)	throws IOException {
         resp.setContentType("text/plain");
 
         String pathinfo = req.getPathInfo();
 
         if (pathinfo.contains("cron")) {
-            getTegneserie(Tegneserier.lunsh, resp);
             resp.getWriter().print(200);
         } else if (pathinfo.contains("lunsh")) {
-            sendTegneserieToResponse(getTegneserie(Tegneserier.lunsh, resp), resp);
+            sendTegneserieToResponse(getTegneserieFromWeb(Tegneserier.lunsh), resp);
         } else if (pathinfo.contains("pondus")) {
-            sendTegneserieToResponse(getTegneserie(Tegneserier.pondus, resp), resp);
+            sendTegneserieToResponse(getTegneserieFromWeb(Tegneserier.pondus), resp);
         } else if (pathinfo.contains("nemi")) {
-            sendTegneserieToResponse(getTegneserie(Tegneserier.nemi, resp), resp);
+            sendTegneserieToResponse(getTegneserieFromWeb(Tegneserier.nemi), resp);
         } else {
             resp.sendRedirect("index.html");
         }
 
     }
 
-
-    private Entity getTegneserie(Tegneserier tegneserieNavn, HttpServletResponse resp) throws IOException {
-        Entity tegneserie = null; //getTegneserieFromDatastore(tegneserieNavn);
-        if (tegneserie == null) {
-            tegneserie = getTegneserieFromWeb(tegneserieNavn);
-        }
-
-        return tegneserie;
-
-
+    private void sendTegneserieToResponse(String tegneserie, HttpServletResponse resp) throws IOException {
+        resp.sendRedirect(tegneserie);
     }
 
-    private void sendTegneserieToResponse(Entity tegneserie, HttpServletResponse resp) throws IOException {
-
-//	    Text text = (Text) tegneserie.getProperty("gif");
-//	    resp.getWriter().write(text.getValue());
-//		resp.getWriter().close();
-//		resp.setContentType("image");
-        resp.sendRedirect((String)tegneserie.getProperty("content"));
-    }
-
-    private Entity getTegneserieFromWeb(Tegneserier tegneserieNavn) throws IOException {
+    private String getTegneserieFromWeb(Tegneserier tegneserieNavn) throws IOException {
         log.info("Henter tegneserie fra web");
-        Key tegneserieKey = createKey(tegneserieNavn);
-        Entity entity = new Entity(KIND, tegneserieKey);
-
 
         String pathToTegneserieImg = "";
         switch (tegneserieNavn) {
             case lunsh:
-                pathToTegneserieImg = findLunchPath(readURLContent("http://www.dagbladet.no/tegneserie"));
+                pathToTegneserieImg = findTegneserieFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/lunch/"));
                 break;
             case pondus:
-                pathToTegneserieImg = findPondusPath(readURLContent("http://www.dagbladet.no/tegneserie"));
+                pathToTegneserieImg = findTegneserieFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/pondus/"));
                 break;
             case nemi:
-                pathToTegneserieImg = findNemiPath(readURLContent("http://www.dagbladet.no/tegneserie"));
+                pathToTegneserieImg = findTegneserieFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/nemi/"));
             default:
                 break;
         }
 
-//		String realpath = runHashedPathToGetRealPath(pathToTegneserieImg);
-
-        entity.setProperty("content", pathToTegneserieImg);
-//		Text text = new Text(realpath);
-//		entity.setProperty("gif", text);
-
-        DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        datastoreService.put(entity);
-
-        return entity;
-    }
-
-    private String runHashedPathToGetRealPath(String pathToTegneserieImg) throws IOException{
-        String realPath = readURLContent(pathToTegneserieImg);
-        System.out.println("GIF: " + realPath);
-        return realPath;
-    }
-
-
-    private Entity getTegneserieFromDatastore(Tegneserier tegneserie) {
-        log.info("Henter tegneserie fra datastore");
-        Query query = new Query(KIND, createKey(tegneserie));
-        DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        List<Entity> tegneserieer = datastoreService.prepare(query).asList(
-                FetchOptions.Builder.withLimit(1));
-        if (!tegneserieer.isEmpty()) {
-            return tegneserieer.get(0);
-        }
-
-        return null;
-    }
-
-    private Key createKey(Tegneserier tegneserie) {
-        return KeyFactory.createKey(KIND, tegneserie + DateFormat.getDateInstance().format(new Date()));
+        return pathToTegneserieImg;
     }
 
     private String readURLContent(String urls) throws IOException {
@@ -138,28 +82,12 @@ public class DagensTegneserieServlet extends HttpServlet {
         return sb.toString();
     }
 
-    private String findLunchPath(String dagbladetTegneserieContent) {
-        String lunch = dagbladetTegneserieContent.substring(dagbladetTegneserieContent.indexOf("Lund"));
-        lunch = lunch.substring(lunch.indexOf("pondusarkiv"));
-        lunch = lunch.substring(0, lunch.indexOf("'"));
-        String ferdigUrl = "http://www.dagbladet.no/tegneserie/" + lunch;
-        return ferdigUrl;
+    private String findTegneserieFromDbHtml(String webpagehtml) {
+        String gifUrl = webpagehtml.substring(webpagehtml.indexOf("<img class=\"tegneserie\""));
+        gifUrl = gifUrl.substring(gifUrl.indexOf("src=\"")+5);
+        gifUrl = gifUrl.substring(0, gifUrl.indexOf("\""));
+        log.info(String.format("Found url %s", gifUrl));
+        return (gifUrl);
     }
 
-    private String findPondusPath(String webpagehtml) {
-        System.out.println(webpagehtml);
-        String pondus = webpagehtml.substring(webpagehtml.indexOf("pondusarkiv"));
-        pondus = pondus.substring(0, pondus.indexOf("'"));
-        String ferdigUrl = "http://www.dagbladet.no/tegneserie/" + pondus;
-        return ferdigUrl;
-    }
-    
-    private String findNemiPath(String webpagehtml) {
-        String nemi = webpagehtml.substring(webpagehtml.indexOf("Lise Myhre"));
-        nemi = nemi.substring(nemi.indexOf("pondusarkiv"));
-        nemi = nemi.substring(0, nemi.indexOf("'"));
-        String ferdigUrl = "http://www.dagbladet.no/tegneserie/" + nemi;
-        return ferdigUrl;
-
-    }
 }
