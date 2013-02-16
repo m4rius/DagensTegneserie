@@ -1,9 +1,12 @@
 package com.marius.dagenstegneserie;
 
 import com.google.appengine.api.datastore.*;
-import com.marius.dagenstegneserie.parsers.DagbladetCartoonParser;
+
+import java.util.Date;
+import java.util.logging.Logger;
 
 public class CartoonDataStoreService {
+    private static final Logger log = Logger.getLogger(CartoonDataStoreService.class.getName());
 
     private static final String KIND = "Cartoon";
 
@@ -19,7 +22,12 @@ public class CartoonDataStoreService {
             entity = findUrlAndStore(cartoon);
         }
 
-        return entity.getProperty("url").toString();
+        if (entity != null) {
+            return entity.getProperty("url").toString();
+        }
+
+        log.severe(String.format("Could not find url for %s", cartoon.name()));
+        return "";
     }
 
     private Entity findUrlAndStore(Cartoon cartoon) {
@@ -32,8 +40,8 @@ public class CartoonDataStoreService {
         if (entity == null) {
             createAndStoreNewEntity(cartoon, url);
         } else {
-
             entity.setProperty("url", url);
+            entity.setProperty("updated", new Date());
             storeEntity(entity);
         }
 
@@ -41,13 +49,14 @@ public class CartoonDataStoreService {
     }
 
     private String findUrlToCartoon(Cartoon cartoon) {
-        return new DagbladetCartoonParser().findUrlFor(cartoon);
+        return cartoon.getParser().findUrlFor(cartoon);
     }
 
     private Entity createAndStoreNewEntity(Cartoon cartoon, String url) {
         Entity entity = new Entity(KIND, cartoon.name());
         entity.setProperty("cartoonType", cartoon.name());
         entity.setProperty("url", url);
+        entity.setProperty("created", new Date());
         //entity.setProperty("date", new Date());
 
         storeEntity(entity);

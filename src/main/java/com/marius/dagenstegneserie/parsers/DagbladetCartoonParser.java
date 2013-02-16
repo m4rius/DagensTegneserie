@@ -19,23 +19,9 @@ public class DagbladetCartoonParser extends AbstractCartoonParser implements Car
     }
 
     public String findUrlFor(Cartoon cartoon) {
-
         String pathToCartoonImg = "";
         try {
-
-            switch (cartoon) {
-                case lunsh:
-                    pathToCartoonImg = findCartoonFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/lunch/"));
-                    break;
-                case pondus:
-                    pathToCartoonImg = findCartoonFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/pondus/"));
-                    break;
-                case nemi:
-                    pathToCartoonImg = findCartoonFromDbHtml(readURLContent("http://www.dagbladet.no/tegneserie/nemi/"));
-                default:
-                    break;
-
-            }
+            pathToCartoonImg = findCartoonFromDbHtml(readURLContent(cartoon.getExternalUrl()));
         } catch (IOException e) {
             log.severe(e.getMessage());
         }
