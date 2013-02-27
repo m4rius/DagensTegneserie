@@ -12,7 +12,9 @@ public enum Cartoon {
     rocky("rocky", "http://www.dagbladet.no/tegneserie/rocky/", new DagbladetCartoonProvider(), true),
     zelda("zelda", "http://www.dagbladet.no/tegneserie/zelda/", new DagbladetCartoonProvider(), true),
     tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false);
+    dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
+    hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
+    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false);
 
     private Cartoon(String appUrl, String externalUrl, CartoonProvider provider, boolean store) {
         this.appUrl = appUrl;
