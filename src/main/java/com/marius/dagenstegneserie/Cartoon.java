@@ -14,7 +14,8 @@ public enum Cartoon {
     tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
     dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
     hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false);
+    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
+    reform94("reform94", "http://heltnormalt.no/img/reform94/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false);
 
     private Cartoon(String appUrl, String externalUrl, CartoonProvider provider, boolean store) {
         this.appUrl = appUrl;
