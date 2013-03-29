@@ -2,7 +2,7 @@ package com.marius.dagenstegneserie;
 
 import com.marius.dagenstegneserie.parsers.CartoonProvider;
 import com.marius.dagenstegneserie.parsers.DagbladetCartoonProvider;
-import com.marius.dagenstegneserie.parsers.HeltNormaltCartoonProvider;
+import com.marius.dagenstegneserie.parsers.ReplaceDateCartoonProvider;
 
 public enum Cartoon {
 
@@ -11,11 +11,12 @@ public enum Cartoon {
     nemi("nemi", "http://www.dagbladet.no/tegneserie/nemi/", new DagbladetCartoonProvider(), true),
     rocky("rocky", "http://www.dagbladet.no/tegneserie/rocky/", new DagbladetCartoonProvider(), true),
     zelda("zelda", "http://www.dagbladet.no/tegneserie/zelda/", new DagbladetCartoonProvider(), true),
-    tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false),
-    reform94("reform94", "http://heltnormalt.no/img/reform94/$year/$month/$day.jpg", new HeltNormaltCartoonProvider(), false);
+    tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    reform94("reform94", "http://heltnormalt.no/img/reform94/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    sinfest("sinfest", "http://www.sinfest.net/comikaze/comics/$year-$month-$day.gif", new ReplaceDateCartoonProvider(), false);
 
     private Cartoon(String appUrl, String externalUrl, CartoonProvider provider, boolean store) {
         this.appUrl = appUrl;

@@ -1,13 +1,13 @@
 package com.marius.dagenstegneserie;
 
-import com.marius.dagenstegneserie.parsers.HeltNormaltCartoonProvider;
+import com.marius.dagenstegneserie.parsers.ReplaceDateCartoonProvider;
 import org.junit.Test;
 
 public class HeltNormalCartoonProviderTest {
 
     @Test
     public void testParse() {
-        new HeltNormaltCartoonProvider().findUrlFor(Cartoon.tommy_tigern);
+        new ReplaceDateCartoonProvider().findUrlFor(Cartoon.tommy_tigern);
 
     }
 }
