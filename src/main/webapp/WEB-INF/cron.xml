@@ -8,7 +8,7 @@
     <cron>
         <url>/store-cartoons</url>
         <description>Refresh cartoon cache</description>
-        <schedule>every 10 minutes</schedule>
+        <schedule>every 15 minutes</schedule>
     </cron>
 
 </cronentries>
