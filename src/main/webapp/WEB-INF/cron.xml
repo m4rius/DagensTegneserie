@@ -3,7 +3,7 @@
     <cron>
         <url>/cron</url>
         <description>Keep the app alive</description>
-        <schedule>every 2 minutes</schedule>
+        <schedule>every 4 minutes</schedule>
     </cron>
     <cron>
         <url>/store-cartoons</url>
