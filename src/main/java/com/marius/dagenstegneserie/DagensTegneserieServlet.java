@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 
 @SuppressWarnings("serial")
@@ -15,8 +14,13 @@ public class DagensTegneserieServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
 
+        if (pathInfo.startsWith("/")) {
+            pathInfo = pathInfo.substring(1);
+        }
+
+
         for (Cartoon cartoon : Cartoon.values()) {
-            if (pathInfo.contains(cartoon.getAppUrl())) {
+            if (pathInfo.equals(cartoon.getAppUrl())) {
                 sendCartoonToResponse(new CartoonDataStoreService().getUrlFor(cartoon), resp);
                 return;
             }

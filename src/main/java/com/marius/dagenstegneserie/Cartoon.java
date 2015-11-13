@@ -2,6 +2,7 @@ package com.marius.dagenstegneserie;
 
 import com.marius.dagenstegneserie.parsers.CartoonProvider;
 import com.marius.dagenstegneserie.parsers.DagbladetCartoonProvider;
+import com.marius.dagenstegneserie.parsers.DilbertDotComProvider;
 import com.marius.dagenstegneserie.parsers.ReplaceDateCartoonProvider;
 
 public enum Cartoon {
@@ -15,7 +16,9 @@ public enum Cartoon {
     dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
     hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
     wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
-    kollektivet("kollektivet", "http://heltnormalt.no/img/kollektivet/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false)
+    kollektivet("kollektivet", "http://heltnormalt.no/img/kollektivet/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
+    dilbertEN("dilbert_en", "http://www.dilbert.com", new DilbertDotComProvider(), true)
+
     ;
 
     private Cartoon(String appUrl, String externalUrl, CartoonProvider provider, boolean store) {
