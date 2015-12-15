@@ -12,7 +12,7 @@ public enum Cartoon {
     nemi("nemi", "http://www.dagbladet.no/tegneserie/nemi/", new DagbladetCartoonProvider(), true),
     rocky("rocky", "http://www.dagbladet.no/tegneserie/rocky/", new DagbladetCartoonProvider(), true),
     zelda("zelda", "http://www.dagbladet.no/tegneserie/zelda/", new DagbladetCartoonProvider(), true),
-    tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
+    tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.jpg", new ReplaceDateCartoonProvider(), false),
     dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
     hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
     wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.png", new ReplaceDateCartoonProvider(), false),
