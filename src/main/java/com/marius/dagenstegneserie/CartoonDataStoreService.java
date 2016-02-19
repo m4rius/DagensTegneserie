@@ -26,6 +26,7 @@ public class CartoonDataStoreService {
 
         Entity entity = findEntity(cartoon);
         if (entity == null) {
+            log.info(String.format("%s not found in datastore. Will try to lookup", cartoon.name()));
             entity = findUrlAndStore(cartoon);
         }
 
@@ -64,7 +65,6 @@ public class CartoonDataStoreService {
         entity.setProperty("cartoonType", cartoon.name());
         entity.setProperty("url", url);
         entity.setProperty("created", new Date());
-        //entity.setProperty("date", new Date());
 
         storeEntity(entity);
 
