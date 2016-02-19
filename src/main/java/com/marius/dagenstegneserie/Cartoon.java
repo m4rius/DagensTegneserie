@@ -14,10 +14,13 @@ public enum Cartoon {
     zelda("zelda", "http://www.dagbladet.no/tegneserie/zelda/", new DagbladetCartoonProvider(), true),
     tommy_tigern("tt", "http://heltnormalt.no/img/tommytigern/$year/$month/$day.$format", new StoredDataCartoonProvider(), true),
     dilbert("dilbert", "http://heltnormalt.no/img/dilbert/$year/$month/$day.$format", new StoredDataCartoonProvider(), true),
-    hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.$format", new StoredDataCartoonProvider(), false),
-    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.$format", new StoredDataCartoonProvider(), false),
-    kollektivet("kollektivet", "http://heltnormalt.no/img/kollektivet/$year/$month/$day.$format", new StoredDataCartoonProvider(), false),
-    dilbertEN("dilbert_en", "http://www.dilbert.com", new DilbertDotComProvider(), true)
+    hjalmar("hjalmar", "http://heltnormalt.no/img/hjalmar/$year/$month/$day.$format", new StoredDataCartoonProvider(), true),
+    wumo("wumo", "http://heltnormalt.no/img/wumo/$year/$month/$day.$format", new StoredDataCartoonProvider(), true),
+    kollektivet("kollektivet", "http://heltnormalt.no/img/kollektivet/$year/$month/$day.$format", new StoredDataCartoonProvider(), true),
+    dilbertEN("dilbert_en", "http://www.dilbert.com", new DilbertDotComProvider(), true),
+    trueFacts("truef", "http://heltnormalt.no/img/truth_facts/$year/$month/$day.$format", new StoredDataCartoonProvider(), true)
+
+
 
     ;
 
